@@ -25,7 +25,7 @@ This knowledge is distilled from publicly available material. Full credit and th
 
 - **The Pragmatic Engineer — Gergely Orosz** — <https://newsletter.pragmaticengineer.com>
 - **AI Engineer (@aiDotEngineer)** — <https://www.youtube.com/@aiDotEngineer>
-- **MLOps Community** — <https://anchor.fm/s/174cb1b8/podcast/rss>
+- **MLOps Community** — <https://mlops.community/>
 
 Individual bullets also cite the specific speakers, teams, and companies featured in those talks (Cline, DeepMind, Sonar, WorkOS, Neo4j, and many more) — each links to the exact talk or essay it summarizes.
 
