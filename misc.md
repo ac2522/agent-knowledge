@@ -8,6 +8,16 @@
 - Agents won't persist decisions/learnings unless explicitly prompted to store them — reusable traces need deliberate write steps, not implicit memory [[Neo4j](https://www.youtube.com/watch?v=B9h9ovW5H9U)]
 - Personalization via reusable playbooks/memory encodes the user's own method (e.g. how a firm reviews a contract) so the agent does it the right way, not just any way [[Flinn](https://www.youtube.com/watch?v=7CrPrHgoEYk)]
 - Text-to-structure extraction as a cost cascade: cheap NER (spaCy) → mid (GLiNER) → LLM fallback, then a separate merge/dedup/enrich pass — avoid LLM-for-everything [[Neo4j](https://www.youtube.com/watch?v=B9h9ovW5H9U)]
+- Tacit-knowledge capture is gated by incentive, not model: expert judgment lives in heads, never logged; eliciting it (narrating reasoning, observing trajectories) adds handle-time the expert isn't rewarded for — the bottleneck to distilling senior judgment into an agent's spec/context is the elicitation incentive [ElevenLabs](https://podcasters.spotify.com/pod/show/mlops/episodes/Voice-Agent-Use-Cases-e3ileg6) (2026-05)
+
+## Context engineering
+
+- Stateful "Interactions API" pattern: each call returns an interaction ID you pass into the next call to recover server-side context instead of re-uploading the full context every turn; auto-caches the reused context (cheaper) and lets you fork a conversation (branch after a shared setup into divergent downstream tasks). Re-sending the whole context every turn (chat mode) is the slow/expensive default; server-side reuse is the optimization [Gemini](https://www.youtube.com/watch?v=BcWFc3H7Khg) (2026-05)
+- Chat-mode anchoring gotcha: keeping full history in context and asking for variety ("give me different X each time") makes the model anchor on its own earlier outputs and produce samey results — prune/restructure context when you want diversity, not consistency [Gemini](https://www.youtube.com/watch?v=BcWFc3H7Khg) (2026-05)
+- Structured outputs as the orchestrator↔downstream interface: a small schema (name + prompt + list-of-relevant-entities) makes planning and execution "talk the same language," and the entity list selects exactly which references/context to pass into each downstream call — scoped context instead of dumping everything [Gemini](https://www.youtube.com/watch?v=BcWFc3H7Khg) (2026-05)
+- Instruction-prefix quirk: a TTS model wouldn't act on provided text unless the prompt started with an explicit imperative ("read this text: ..."); content alone was treated as data, not a command — some models need an action verb to distinguish instruction from payload [Gemini](https://www.youtube.com/watch?v=BcWFc3H7Khg) (2026-05)
+- Streaming to overlap work: when a model returns multi-part output, stream so dependent work can start on the first part (e.g. titling/branching off early output) while the rest still generates [Gemini](https://www.youtube.com/watch?v=BcWFc3H7Khg) (2026-05)
+- Voice/low-friction input unlocks richer context: people volunteer far more detail speaking than typing terse prompts — cheap low-friction ways to volunteer context yield better grounding than forcing minimal typed prompts [ElevenLabs](https://podcasters.spotify.com/pod/show/mlops/episodes/Voice-Agent-Use-Cases-e3ileg6) (2026-05)
 
 ## Decision-making frameworks
 
@@ -32,10 +42,14 @@
 - Agents add recovery/fallback paths instead of failing, producing emergent-state-machine sprawl; they won't refactor it away because they don't feel codebase pain [[Pi](https://newsletter.pragmaticengineer.com/p/building-pi-and-what-makes-self-modifying)]
 - Use the agent to answer "why did this change / where did this regress" instantly — replaces manual git blame, GitHub spelunking, cross-timezone Slack questions [[Sentry](https://www.youtube.com/watch?v=li0SaBt9RDM)]
 - Overfitting AI-generated unit tests acted as an accidental golden-master net during a ~1M-LOC refactor touching 82% of core — green = "still somewhat close" [[OpenClaw](https://www.youtube.com/watch?v=pmoDeA3RBZY)] (2026-06)
+- Review tactic for AI-cheap code: keep PRs modular/scoped and route the parts the author doesn't understand to a domain-expert reviewer rather than dumping thousand-line PRs [PwC](https://podcasters.spotify.com/pod/show/mlops/episodes/Autonomous-Agents-at-Work-From-OpenClaw-Hype-to-Enterprise-Reality-e3jj7u3) (2026-05)
 
 ## Provenance & auditability
 
 - Source control for agent-authored code needs character-level provenance, not line-level diffs — attribute human vs LLM-written/influenced code, record model info + identity, map to evals (and back to training); commit chat history alongside PRs; in regulated orgs "what did this agent do at 2pm 3 years ago" must be answerable [[Guild-Meta](https://podcasters.spotify.com/pod/show/mlops/episodes/From-Single-Player-to-Multi-Player-Operating-AI-Agents-at-Scale-e3khpk8)] (2026-06)
+- Agent identity/credentials as first-class: own credentials, scoped authorization, expiration, protection — a leaked token lets an attacker impersonate the agent AND the human behind it [PwC](https://podcasters.spotify.com/pod/show/mlops/episodes/Autonomous-Agents-at-Work-From-OpenClaw-Hype-to-Enterprise-Reality-e3jj7u3) (2026-05)
+- Ownership model: you own AI-generated output (code/email/deck) = you own the logic, system design, blueprint behind it — agent owns code blocks, human owns architecture [PwC](https://podcasters.spotify.com/pod/show/mlops/episodes/Autonomous-Agents-at-Work-From-OpenClaw-Hype-to-Enterprise-Reality-e3jj7u3) (2026-05)
+- Withhold high-risk autonomous actions: don't give the agent price-negotiation/bargaining authority — an LLM deciding can be exploited ("saw it cheaper, give me $1") [Despegar](https://podcasters.spotify.com/pod/show/mlops/episodes/Building-MCP-Before-MCP-Existed-Inside-Despegars-Sofia-Agent-e3j1si9) (2026-05)
 
 ## Formal verification × AI
 
@@ -61,6 +75,7 @@
 - Optimize "speed to understanding" not "speed to outcome" — fast generation that misses the user's implicit intent is useless; capture nuance first [[Flinn](https://www.youtube.com/watch?v=7CrPrHgoEYk)]
 - Autonomous agent loops need a verifiable experiment (training run, kernel benchmark) as the fitness signal — without one, self-improvement has nothing to optimize against [[HuggingFace](https://www.youtube.com/watch?v=JomVvNDjGb8)]
 - Delegate-vs-grapple rule: use AI when the artifact is the outcome; do it by hand when the thought process is the outcome (writing as thinking) — while still rating AI very productive for unblocking technicalities and stress-testing ideas [[Kleppmann](https://newsletter.pragmaticengineer.com/p/designing-data-intensive-applications)] (2026-04)
+- Configure client-level auto-retry (e.g. 5 retries, 2s backoff) for overloaded model endpoints rather than letting transient 5xx/overload errors fail the run [Gemini](https://www.youtube.com/watch?v=BcWFc3H7Khg) (2026-05)
 
 ## Where coding agents pay off — domain limits
 
@@ -87,9 +102,22 @@
 - Don't cache "good answers" for latency — a correct answer goes stale on a ~24h clock as the system changes, so you start confidently serving lies [[Unblocked](https://www.youtube.com/watch?v=BiG2ssibKGc)]
 - Social/expert graph as a retrieval pivot: resolve "who is asking" → their repos, PR history, collaborators → scope retrieval to relevant code instead of the whole corpus [[Unblocked](https://www.youtube.com/watch?v=BiG2ssibKGc)]
 
+## Latency & perceived UX
+
+- Latency Goldilocks zone: too-fast responses read as "it didn't think enough" and lose trust; too-slow reads as "it's stuck." Calibrate response time to perceived task complexity, not to "always minimize" — a trivial query taking 8s feels broken, a genuinely hard query taking 8s feels fine [iFood](https://podcasters.spotify.com/pod/show/mlops/episodes/The-Latency-Goldilocks-Zone-Explained-e3j384v) (2026-05)
+- Latency budget guideline (2022 CSCW survey): 0-4s feels robotically fast, 4-16s broadly acceptable — set per-task budgets, not one global SLA [iFood](https://podcasters.spotify.com/pod/show/mlops/episodes/The-Latency-Goldilocks-Zone-Explained-e3j384v) (2026-05)
+- Perceived latency is the real lever: stream partial output and surface progress status ("collecting data…", "looking that up") so the loop never appears frozen — same wall-clock time with a visible signal is tolerated; with none, users assume a bug [iFood](https://podcasters.spotify.com/pod/show/mlops/episodes/The-Latency-Goldilocks-Zone-Explained-e3j384v) (2026-05)
+- Latency budget is channel-dependent: async (WhatsApp-style) tolerates more thinking time and richer output; sync/voice must respond fast and terse — keep one intelligence core but flex verbosity/item-count/detail per channel [iFood](https://podcasters.spotify.com/pod/show/mlops/episodes/The-Latency-Goldilocks-Zone-Explained-e3j384v) (2026-05)
+- Domain sets the budget: travel users tolerate extra seconds and clarifying questions because the wait is part of the anticipated planning experience — unlike a generic assistant; clarifying-question elicitation is acceptable when users are invested, but cap the number asked [Despegar](https://podcasters.spotify.com/pod/show/mlops/episodes/Building-MCP-Before-MCP-Existed-Inside-Despegars-Sofia-Agent-e3j1si9) (2026-05)
+- Don't chain models to bridge modalities (voice→text model→voice): each hop compounds latency and error — use one multimodal model that takes the input directly when available [iFood](https://podcasters.spotify.com/pod/show/mlops/episodes/The-Latency-Goldilocks-Zone-Explained-e3j384v) (2026-05)
+- Scaling bottleneck is usually external data, not the agent: latency is gated by the slowest upstream API/source — pre-compute or run those in background workflows ahead of the loop, and get throughput agreements with data owners before scaling [iFood](https://podcasters.spotify.com/pod/show/mlops/episodes/The-Latency-Goldilocks-Zone-Explained-e3j384v) (2026-05)
+- Config-driven agent design: hard-code nothing; expose behavioral knobs (verbosity, result count, exploration-vs-exploitation weight, per-channel behavior) as remote config so each can be A/B tested without redeploys [iFood](https://podcasters.spotify.com/pod/show/mlops/episodes/The-Latency-Goldilocks-Zone-Explained-e3j384v) (2026-05)
+
 ## Economics & pricing
 
 - Token-hunger breaks subscription pricing; quota throttling per user/team is the current blunt defense against one power user spawning 100 agents [[DeepMind](https://www.youtube.com/watch?v=7gujZrJ9L5I)]
+- Cost/latency knob: service tiers (flex ≈50% cheaper but delayed / standard / priority ≈2x price but fast-tracked) — pick per call by latency sensitivity [Gemini](https://www.youtube.com/watch?v=BcWFc3H7Khg) (2026-05)
+- Model selection as FinOps discipline: small/cheap models for simple decisions, reserve cutting-edge models for tool-calling (only a few models reliably tool-call) [PwC](https://podcasters.spotify.com/pod/show/mlops/episodes/Autonomous-Agents-at-Work-From-OpenClaw-Hype-to-Enterprise-Reality-e3jj7u3) (2026-05)
 
 ## Languages & type systems as agent leverage
 
@@ -108,6 +136,18 @@
 
 ## Model landscape (watch)
 
+- Anthropic opening Claude Code to run on rival (e.g. OpenAI) models — "bring your model" interop — reads as a bet that the harness (~500k LOC around the model) is where the value lives, not the model: their own model knows the harness in its weights, so inviting competitors in is a strength play, not full open-harness (you still can't read the code) [ZenML](https://podcasters.spotify.com/pod/show/mlops/episodes/Agents-are-Just-While-Loops-e3j3a6q) (2026-05)
 - Text-diffusion serving economics: ~2,000 tok/s at AR-quality parity (edge on code) but lower throughput at large batch → too costly for big hosted models; sweet spot is batch≈1 (on-device, robotics, single-user interactive loops; already deployed inside Alphabet) — expect diffusion coding models there first [[DeepMind-diffusion](https://www.youtube.com/watch?v=r305-aQTaU0)] (2026-06)
 - Diffusion gives a pre-settable latency budget: cap denoise steps for a known worst-case latency regardless of output length; the model adaptively finishes easy outputs early (4 passes for 100 memorized tokens vs 31 for hard prose); step budget = tunable speed/quality knob [[DeepMind-diffusion](https://www.youtube.com/watch?v=r305-aQTaU0)] (2026-06)
 - In-place editing is a native diffusion primitive — surgical bug-fix/add-docs edits conditioned bidirectionally on surrounding code, vs AR token-by-token regeneration or string-replace [[DeepMind-diffusion](https://www.youtube.com/watch?v=r305-aQTaU0)] (2026-06)
+
+## Deploying agents in orgs
+
+- Forward-deployed-engineer pattern: embed one engineer directly inside the target team (lawyers, policy advisors, parole officers), observe real workflows, co-design the tool with users, and ship idea→implementation in ~2 weeks rather than a year-long "discovery" phase [10DS](https://www.youtube.com/watch?v=ObNKGf9YR0g) (2026-05)
+- Pair tool rollout to non-technical users with active upskilling on the model's failure modes: users who don't understand the model steer it toward the answer they want (sycophancy), so teach the risks, don't just hand over the UI [10DS](https://www.youtube.com/watch?v=ObNKGf9YR0g) (2026-05)
+- Favor a re-runnable tool over a one-shot deliverable when the underlying data keeps changing: a statute-book analysis tool replaced a £1.5M one-off consultancy job precisely because the team can re-run it as laws change (consultancy output would be stale before delivery) [10DS](https://www.youtube.com/watch?v=ObNKGf9YR0g) (2026-05)
+
+## Industry stats & adoption signals
+
+- Stanford study (120k devs): clean codebases amplify AI gains, unchecked AI amplifies entropy — more PRs but lower quality, heavy rework, ~1% net output gain [Playwright](https://www.youtube.com/watch?v=FWEInOtngmM) (2026-05)
+- GitHub ~275M commits/week in 2026 (Kyle Diggle), extrapolating to ~14B/yr vs 1B in 2025; growing share co-authored by agents (Claude and Copilot cosign commits; Codex does not) [Playwright](https://www.youtube.com/watch?v=FWEInOtngmM) (2026-05)
