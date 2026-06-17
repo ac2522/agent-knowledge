@@ -43,6 +43,7 @@
 - Use the agent to answer "why did this change / where did this regress" instantly — replaces manual git blame, GitHub spelunking, cross-timezone Slack questions [[Sentry](https://www.youtube.com/watch?v=li0SaBt9RDM)]
 - Overfitting AI-generated unit tests acted as an accidental golden-master net during a ~1M-LOC refactor touching 82% of core — green = "still somewhat close" [[OpenClaw](https://www.youtube.com/watch?v=pmoDeA3RBZY)] (2026-06)
 - Review tactic for AI-cheap code: keep PRs modular/scoped and route the parts the author doesn't understand to a domain-expert reviewer rather than dumping thousand-line PRs [PwC](https://podcasters.spotify.com/pod/show/mlops/episodes/Autonomous-Agents-at-Work-From-OpenClaw-Hype-to-Enterprise-Reality-e3jj7u3) (2026-05)
+- Split review by emotional friction: offload the opinionated/nitpick reviews engineers hate (variable names, style) to agents, keep architectural review human — removes the interpersonal friction of nitpicking [PFF](https://www.youtube.com/watch?v=VMemhtlsoNk) (2026-05)
 
 ## Provenance & auditability
 
@@ -68,6 +69,8 @@
 - Maintainer PR-triage at scale: bare "review &lt;URL&gt;" prompts cleared 100 PRs in 90 min — ~10% merge as-is, ~20% right-problem/wrong-code → agent clean-rooms the fix in project style [[DHH](https://newsletter.pragmaticengineer.com/p/dhhs-new-way-of-writing-code)] (2026-04)
 - Duplicate agent-era PRs/issues as a demand signal: semantic-embed + cluster the 6,000-PR pile; heavy duplicate pressure = de-facto roadmap priority [[OpenClaw](https://www.youtube.com/watch?v=pmoDeA3RBZY)] (2026-06)
 - Earn agent adoption, don't mandate it: pose challenges only solvable with the new tools ("eliminate the holiday code freeze" → diff-risk-score agent) and run a visible, forkable agent hub so one engineer's high-impact agent compounds; mandating "more PRs / move faster" backfires [[Guild-Meta](https://podcasters.spotify.com/pod/show/mlops/episodes/From-Single-Player-to-Multi-Player-Operating-AI-Agents-at-Scale-e3khpk8)] (2026-06)
+- Phased adoption sequence: start with your strongest/most-curious engineers on non-critical systems, then expand — don't mass-onboard everyone at once via a hackathon [PFF](https://www.youtube.com/watch?v=VMemhtlsoNk) (2026-05)
+- Org-change levers for adoption: make AI use a binary job expectation (write it into job descriptions, "not adopting = not meeting expectations"), repeat the message constantly, run Slack channels celebrating skill updates/automations, hold hackathons / AI immersion days, and staff a dedicated full-time enablement team [Intercom](https://www.youtube.com/watch?v=4_VQBbs2iQA) (2026-05)
 
 ## Architecture & human design ownership
 
@@ -76,6 +79,7 @@
 - Autonomous agent loops need a verifiable experiment (training run, kernel benchmark) as the fitness signal — without one, self-improvement has nothing to optimize against [[HuggingFace](https://www.youtube.com/watch?v=JomVvNDjGb8)]
 - Delegate-vs-grapple rule: use AI when the artifact is the outcome; do it by hand when the thought process is the outcome (writing as thinking) — while still rating AI very productive for unblocking technicalities and stress-testing ideas [[Kleppmann](https://newsletter.pragmaticengineer.com/p/designing-data-intensive-applications)] (2026-04)
 - Configure client-level auto-retry (e.g. 5 retries, 2s backoff) for overloaded model endpoints rather than letting transient 5xx/overload errors fail the run [Gemini](https://www.youtube.com/watch?v=BcWFc3H7Khg) (2026-05)
+- Humans still own three things agents botch: security (agents take shortcuts), product/brand feel (agent output reads generic), and scale/complexity judgment [PFF](https://www.youtube.com/watch?v=VMemhtlsoNk) (2026-05)
 
 ## Where coding agents pay off — domain limits
 
@@ -118,6 +122,7 @@
 - Token-hunger breaks subscription pricing; quota throttling per user/team is the current blunt defense against one power user spawning 100 agents [[DeepMind](https://www.youtube.com/watch?v=7gujZrJ9L5I)]
 - Cost/latency knob: service tiers (flex ≈50% cheaper but delayed / standard / priority ≈2x price but fast-tracked) — pick per call by latency sensitivity [Gemini](https://www.youtube.com/watch?v=BcWFc3H7Khg) (2026-05)
 - Model selection as FinOps discipline: small/cheap models for simple decisions, reserve cutting-edge models for tool-calling (only a few models reliably tool-call) [PwC](https://podcasters.spotify.com/pod/show/mlops/episodes/Autonomous-Agents-at-Work-From-OpenClaw-Hype-to-Enterprise-Reality-e3jj7u3) (2026-05)
+- Cost-normalized accuracy (Google term) = accuracy ÷ cost — makes the tiered-model tradeoff concrete (92% @ $0.02 can beat 95% @ $0.15); tier cheap models for simple queries, reserve expensive in-agent calls for complex ones [Arize](https://www.youtube.com/watch?v=Xfl50508LZM) (2026-05)
 
 ## Languages & type systems as agent leverage
 
@@ -151,3 +156,5 @@
 
 - Stanford study (120k devs): clean codebases amplify AI gains, unchecked AI amplifies entropy — more PRs but lower quality, heavy rework, ~1% net output gain [Playwright](https://www.youtube.com/watch?v=FWEInOtngmM) (2026-05)
 - GitHub ~275M commits/week in 2026 (Kyle Diggle), extrapolating to ~14B/yr vs 1B in 2025; growing share co-authored by agents (Claude and Copilot cosign commits; Codex does not) [Playwright](https://www.youtube.com/watch?v=FWEInOtngmM) (2026-05)
+- Validate agent output by blending ticket count with code complexity, NOT PR/LOC count (which Goodharts); ground truth = customer-satisfaction survey (8.6 vs ~7 pre-AI) [PFF](https://www.youtube.com/watch?v=VMemhtlsoNk) (2026-05)
+- Productivity proxy = code changes per R&D person (acknowledged Goodhart risk); reached 2x PR throughput in <1 year [Intercom](https://www.youtube.com/watch?v=4_VQBbs2iQA) (2026-05)

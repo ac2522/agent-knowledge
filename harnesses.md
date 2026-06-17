@@ -96,6 +96,7 @@
 - Injecting LSP diagnostics after every edit call confuses the model — it edits line-by-line and isn't done yet; batch diagnostics like a human reads errors after editing, not per-edit. [Pi](https://newsletter.pragmaticengineer.com/p/building-pi-and-what-makes-self-modifying)
 - Tool outputs as semantic summaries, not raw artifacts — a 50k-line JSON perf trace blows any context; return a markdown key-metrics summary by default, keep the raw file on disk for CLI post-processing. [Chrome DevTools](https://www.youtube.com/watch?v=_B4Pv9ttFgY) (2026-06)
 - Write tool error messages for agent self-healing — append the actionable cause ("history entry to navigate was not found"); every unrecovered error = retry tokens. [Chrome DevTools](https://www.youtube.com/watch?v=_B4Pv9ttFgY) (2026-06)
+- Enrich traces for later debugging: enable GenAI tracing + message-content capture, then inject your own custom span attributes so you can grep traces for the right thing when a bug surfaces. [Foundry](https://www.youtube.com/watch?v=iOXM3zE-2dk) (2026-05) (low-confidence src)
 
 ## Tool design for agents
 - Tool-description craft: ~97% of MCP tool descriptions have quality smells; embed the domain keywords agents match intent against (LCP/INP/CLS); richer descriptions cost context and bias small models to over-call — "minimum viable description" is an endless re-tune as models change. [Chrome DevTools](https://www.youtube.com/watch?v=_B4Pv9ttFgY) (2026-06)
@@ -215,6 +216,9 @@
 - Issue labels as the loop's state machine: a `ready-for-spec` label routes to a spec-writing automation, `ready-for-agent`/`ready-to-implement` routes to an implementation automation; flipping the label is both the inter-agent handoff and the human approval point. [Warp](https://www.youtube.com/watch?v=gi0Lx6c84VE) (2026-06)
 - Two-stage chain beats one agent: automation A turns an under-specified issue into a spec doc (product + tech spec — affected monorepo apps/packages, version bumps, acceptance criteria), you merge that spec into the repo as a paper trail, automation B picks it up and implements. Each loop is only as good as its issue's explicit acceptance criteria — the `goal` skill (Claude Code & Codex) drives the agent to those before it returns control. [Warp](https://www.youtube.com/watch?v=gi0Lx6c84VE) (2026-06)
 - Stitch an automation onto every step of the contribution flow, not just implementation: an intake-triage agent does initial research + flags whether a new issue is well-scoped, and a PR-review agent pre-screens community PRs for critical/important bugs before any maintainer time is spent. Scales to thousands of issues on cloud runners (not local worktrees); Warp open-sourced the triage/PR-review templates + a common-skills repo of adaptable tech-spec/product-spec skills. [Warp](https://www.youtube.com/watch?v=gi0Lx6c84VE) (2026-06)
+- End-to-end autonomous SWE chain: spec → agent interviews you to fill gaps → writes an LDD (low-level design doc) → distributes it for feedback → auto-creates non-blocking tickets → opens PRs, with blocking dependencies auto-flagged for a human. A prescriptive design doc up front curbs over-engineering / 1000-line sprawl by pinning scope before any code. [PFF](https://www.youtube.com/watch?v=VMemhtlsoNk) (2026-05)
+- Tickets auto-update from PR status (open→in-progress→review→merged→closed) — the status flow replaces standups. [PFF](https://www.youtube.com/watch?v=VMemhtlsoNk) (2026-05)
+- Self-healing QA stage on the loop: PR merge → auto-deploy to staging → QA agent reads the tickets + acceptance criteria → runs QA → flags failures (next step: the agent auto-creates fix PRs to close the loop). [PFF](https://www.youtube.com/watch?v=VMemhtlsoNk) (2026-05)
 
 ## Dynamic workflows — a bespoke harness per task
 - One coding harness gets funnelled all knowledge work but isn't optimal for non-coding jobs; let the agent write a custom harness per task at runtime instead of forcing the task through a generic one (Opus 4.8 is finally good enough to author the harness on the fly). [Prompt Engineering](https://www.youtube.com/watch?v=l5rae4LMKBc)
@@ -246,11 +250,19 @@
 - Skill-based harness leaked context as it grew (model "forgot"/skipped tasks); moving orchestration to deterministic code fixed it. [WorkOS](https://www.youtube.com/watch?v=vy7o1g2iHY8)
 - A working agent harness + collected eval traces ≈ ready-made training data — RL can teach a model your service from what the harness already logs. [Modal](https://www.youtube.com/watch?v=HvZXAOZ3iv8)
 - RL rollouts are embarrassingly parallel — fan out to many ephemeral sandboxes, kill unpromising runs early (hyperparameter search becomes meta-evolutionary). [Modal](https://www.youtube.com/watch?v=HvZXAOZ3iv8)
+- Instrument hooks into an observability backend (Honeycomb) for skill-invocation telemetry — which skills get used where, org-visible — to measure skill effectiveness and steer investment. [Intercom](https://www.youtube.com/watch?v=4_VQBbs2iQA) (2026-05)
+- Pull all session transcripts into object storage (S3) for data mining: report writing, measuring skill effectiveness, closing the feedback loop. [Intercom](https://www.youtube.com/watch?v=4_VQBbs2iQA) (2026-05)
 
 ## Self-modifying / bespoke harnesses
 - Self-modifying harness: agent loads custom TS modules into the same process to add tools, custom compaction, full TUI rewrites — per-user, per-task. [Pi](https://newsletter.pragmaticengineer.com/p/building-pi-and-what-makes-self-modifying)
 - Per-project bespoke harness wins: e.g. game project where agent built itself screenshot/state-dump/sim tools + TUI image rendering + conversation branching/rewind, so it can self-validate while human stays in loop. [Pi](https://newsletter.pragmaticengineer.com/p/building-pi-and-what-makes-self-modifying)
 - Make your agent itself easy for *other* coding agents to build/test (a "pseudo-RL" loop): expose a CLI, write AGENTS.md, add skills, wire CI/CD — so long-running agents can change and end-to-end test your agent in a parallel thread. [Cline](https://www.youtube.com/watch?v=yUmS-F9IX90)
+
+## Org-scale rollout & adoption
+- Standardize on ONE agent platform (chose Claude Code) — like avoiding multi-cloud: spreading work across tools forfeits compounding platform benefits, and it also kills per-task "model anxiety" (no deciding which tool/model per task). [Intercom](https://www.youtube.com/watch?v=4_VQBbs2iQA) (2026-05)
+- "Connect the agent to everything": anything you'd do on a laptop the agent can do — debugging, testing, planning, not just code; mature-org controls/permissions/audits are what make unleashing it that broadly safe. [Intercom](https://www.youtube.com/watch?v=4_VQBbs2iQA) (2026-05)
+- Onboard the agent like a new hire — capture framework conventions, architecture, UI patterns, testing/security standards as context, skills, guidance, and hooks. [Intercom](https://www.youtube.com/watch?v=4_VQBbs2iQA) (2026-05)
+- Push internal agent plugins to all laptops, bypassing the vendor's own update mechanism — managing agent installs across hundreds of laptops is like managing Python installs, so own the distribution. [Intercom](https://www.youtube.com/watch?v=4_VQBbs2iQA) (2026-05)
 
 ## CRUD / stateful-tool agents in eval
 - CRUD-tool agents break offline eval: hard to reconstruct external-system state at input-capture time and risky to mutate prod — solve with mock APIs + state reconstruction. [Braintrust](https://www.youtube.com/watch?v=FB-MLPhL9Ms)
