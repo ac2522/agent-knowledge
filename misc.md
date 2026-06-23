@@ -73,6 +73,19 @@
 - Formal proofs as CI regression gates, not one-time verification: S3 wired its strong-consistency proof into check-ins on the index-subsystem code paths — every commit re-proves the consistency model hasn't regressed; "at a certain scale, math has to save you" (can't enumerate combinatoric edge cases) [[S3](https://newsletter.pragmaticengineer.com/p/how-aws-s3-is-built)] (2026-01)
 - Pair proofs with continuous empirical verification — proofs assume hardware failure rates; S3 runs dedicated auditor microservices inspecting every byte fleet-wide to answer "what was our actual durability last week" — proof on every check-in AND verify on every request [[S3](https://newsletter.pragmaticengineer.com/p/how-aws-s3-is-built)] (2026-01)
 
+## How AI changes the dev's work (research)
+
+- Longitudinal study (28 countries, two surveys 6mo apart): statistically significant shift from creation-focused tasks to verification-focused; reviewing code was the *only* task devs spent MORE time on — craft doesn't disappear, it relocates [Jeremy Howard](https://www.youtube.com/watch?v=NmjGfdZLNIs) (2026-06)
+- New mode named "supervisory engineering work" / a "middle loop" = directing AI + evaluating output [Jeremy Howard](https://www.youtube.com/watch?v=NmjGfdZLNIs) (2026-06)
+- 84% felt more productive (stable across both points) BUT devs reporting a *decline* in developer experience nearly doubled to 27% by month 6 — DX = cognitive load + flow state + feedback loops; flow state hit hardest; feedback loops improved yet more-frequent feedback interrupts flow (net negative) [Jeremy Howard](https://www.youtube.com/watch?v=NmjGfdZLNIs) (2026-06)
+- Strongest predictor of productivity gain = self-efficacy (belief in own ability), NOT seniority/company-size — high-self-efficacy devs >10x more likely to report higher gains; buildable via mastery experiences/experimentation (an actionable lever) [Jeremy Howard](https://www.youtube.com/watch?v=NmjGfdZLNIs) (2026-06)
+- Three plausible dev futures: artisanal developer (rare, regulated/safety); clerical coder (avoid — uncritically accept overnight PRs); orchestrator/"code conductor" (build software with agents at scale). Orchestrator splits by joy: domain-focused (specs/intents capture what+why) vs harness-focused (build the machine that builds the machine) [Jeremy Howard](https://www.youtube.com/watch?v=NmjGfdZLNIs) (2026-06)
+- "Dark flow" / junk flow (Csikszentmihalyi): vibe coding can hijack the same slot-machine dopamine loop as casinos — feels like flow, isn't growth (ref Rachel Thomas, "Breaking the spell of vibe coding") [Jeremy Howard](https://www.youtube.com/watch?v=NmjGfdZLNIs) (2026-06)
+- Illusion of control: blindly picking an agent's A/B architecture choice you don't understand decays your understanding/autonomy [Jeremy Howard](https://www.youtube.com/watch?v=NmjGfdZLNIs) (2026-06)
+- Canonical anti-pattern: "0→95% in 5h felt amazing; 15h later still not done, don't know where I stand" — productivity *feeling* decoupled from external validation (cites Armin Ronacher) [Jeremy Howard](https://www.youtube.com/watch?v=NmjGfdZLNIs) (2026-06)
+- 200k-LOC vibe-coded codebase: pace SLOWED as models improved (more code, less careful engineering); team felt great until quarterly metrics gave a reality check [Jeremy Howard](https://www.youtube.com/watch?v=NmjGfdZLNIs) (2026-06)
+- Incentive warning: vendors/managers optimize your OUTPUTS ("token-maxing"), not your autonomy/mastery — default you into the decay path; protect your own growth (ref Steve Yegge, "the AI vampire" / AI burnout) [Jeremy Howard](https://www.youtube.com/watch?v=NmjGfdZLNIs) (2026-06)
+
 ## PR back-pressure & team workflow
 
 - Bottlenecks / back-pressure are now a deliberate engineering primitive: agent PRs arrive faster than humans can review or even than they stay mergeable [[Pi](https://newsletter.pragmaticengineer.com/p/building-pi-and-what-makes-self-modifying)] (2026-04)
@@ -161,6 +174,13 @@
 - Design system + pattern library for consistent agent-built UIs: document the rules ("one primary button per page"), build components with previews/snippets agents can see and review against, compose bottom-up; ban inline styles via lint [[Safe Intelligence](https://www.youtube.com/watch?v=504PvfXou5Y)] (2026-06)
 - Consumer agents largely ship untested; a quick standardized safety-baseline exam before deploying an agent to act on your inbox/accounts is a cheap guardrail [[DeepMind](https://www.youtube.com/watch?v=Ubwb6NzegyA)] (2026-05)
 
+## Agents beyond coding / agent-experience
+
+- Underappreciated agent benefit = killing yak-shaves (dependency-tree crawling, installing/fixing deps); a productivity model that prizes only autonomy — not parallelism + depth of yak-shaving — undercounts agents [swyx](https://www.youtube.com/watch?v=zepu8Kk6FBQ) (2026-05)
+- Communicate with a coding agent like a human: red-line/annotate a screenshot or Figma page (cf. Steve Ruiz/TLDraw) instead of precise prose — non-technical teammates pick it up with no manual [swyx](https://www.youtube.com/watch?v=zepu8Kk6FBQ) (2026-05)
+- Throw away the SaaS CMS — commit data/schedule to code, let the coding agent manage it as source of truth (forward an email/screenshot → "handle it"); coding agents "breaking containment" into general knowledge work = a top-trend-of-2026 call [swyx](https://www.youtube.com/watch?v=zepu8Kk6FBQ) (2026-05)
+- Agent-experience (AX): primary user is increasingly an agent not a human (claim ~60% of Vercel traffic is bots) → CLIs/APIs/MCPs > dashboards; ship UI into the agent's app (MCP-UI) not your own [swyx](https://www.youtube.com/watch?v=zepu8Kk6FBQ) (2026-05)
+
 ## Model landscape (watch)
 
 - Anthropic opening Claude Code to run on rival (e.g. OpenAI) models — "bring your model" interop — reads as a bet that the harness (~500k LOC around the model) is where the value lives, not the model: their own model knows the harness in its weights, so inviting competitors in is a strength play, not full open-harness (you still can't read the code) [ZenML](https://podcasters.spotify.com/pod/show/mlops/episodes/Agents-are-Just-While-Loops-e3j3a6q) (2026-05)
@@ -169,12 +189,14 @@
 - Text-diffusion serving economics: ~2,000 tok/s at AR-quality parity (edge on code) but lower throughput at large batch → too costly for big hosted models; sweet spot is batch≈1 (on-device, robotics, single-user interactive loops; already deployed inside Alphabet) — expect diffusion coding models there first [[DeepMind-diffusion](https://www.youtube.com/watch?v=r305-aQTaU0)] (2026-06)
 - Diffusion gives a pre-settable latency budget: cap denoise steps for a known worst-case latency regardless of output length; the model adaptively finishes easy outputs early (4 passes for 100 memorized tokens vs 31 for hard prose); step budget = tunable speed/quality knob [[DeepMind-diffusion](https://www.youtube.com/watch?v=r305-aQTaU0)] (2026-06)
 - In-place editing is a native diffusion primitive — surgical bug-fix/add-docs edits conditioned bidirectionally on surrounding code, vs AR token-by-token regeneration or string-replace [[DeepMind-diffusion](https://www.youtube.com/watch?v=r305-aQTaU0)] (2026-06)
+- Agentic vs answer inference (forward-looking/speculative): "answer inference" = low-latency pair-programming you watch; "agentic inference" = background long-horizon work where latency barely matters → agents could schedule their OWN compute against goal+budget (plan at midnight on a cheap model, switch to a strong low-latency VLM for QA), enabling an "inference exchange". Substantive bit today: agents own more of the harness (context/tools) but not yet compute/model-choice [Minimax](https://www.youtube.com/watch?v=m12vGjfbNlo) (2026-05)
 
 ## Deploying agents in orgs
 
 - Forward-deployed-engineer pattern: embed one engineer directly inside the target team (lawyers, policy advisors, parole officers), observe real workflows, co-design the tool with users, and ship idea→implementation in ~2 weeks rather than a year-long "discovery" phase [10DS](https://www.youtube.com/watch?v=ObNKGf9YR0g) (2026-05)
 - Pair tool rollout to non-technical users with active upskilling on the model's failure modes: users who don't understand the model steer it toward the answer they want (sycophancy), so teach the risks, don't just hand over the UI [10DS](https://www.youtube.com/watch?v=ObNKGf9YR0g) (2026-05)
 - Favor a re-runnable tool over a one-shot deliverable when the underlying data keeps changing: a statute-book analysis tool replaced a £1.5M one-off consultancy job precisely because the team can re-run it as laws change (consultancy output would be stale before delivery) [10DS](https://www.youtube.com/watch?v=ObNKGf9YR0g) (2026-05)
+- Agent taxonomy / where to find a project to build: customer-facing (in-app assistant over proprietary data beats users CSV-dumping into ChatGPT), internal (enterprise search, paperwork automation — go "off book" to find real pain), dev-platform (any feed of huge machine data → AI SRE on alerts / agent over TB of CI logs; build a "blessed path"/internal agent platform). Teams that ship fastest already built an agent before (speedrun the idea maze) → favors a framework so time goes to UX not primitives; dev-platform agents give the tightest feedback loop (you are your own user) [Mastra](https://www.youtube.com/watch?v=m12vGjfbNlo) (2026-05)
 
 ## Industry stats & adoption signals
 
