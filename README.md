@@ -14,7 +14,7 @@ The aim is to capture the *frontier* of agentic-coding practice: the parts that 
 | [`evals.md`](evals.md) | Evals | 361 |
 | [`harnesses.md`](harnesses.md) | Harnesses | 578 |
 | [`misc.md`](misc.md) | Misc | 298 |
-| [`skills.md`](skills.md) | Skills | 159 |
+| [`skills.md`](skills.md) | Skills | 120 |
 
 ## How to read an entry
 
