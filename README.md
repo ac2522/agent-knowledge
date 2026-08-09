@@ -10,11 +10,11 @@ The aim is to capture the *frontier* of agentic-coding practice: the parts that 
 
 | File | Topic | Entries |
 |------|-------|--------:|
-| [`archive.md`](archive.md) | Archive | 3 |
-| [`evals.md`](evals.md) | Evals | 386 |
-| [`harnesses.md`](harnesses.md) | Harnesses | 591 |
-| [`misc.md`](misc.md) | Misc | 316 |
-| [`skills.md`](skills.md) | Skills | 123 |
+| [`archive.md`](archive.md) | Archive | 4 |
+| [`evals.md`](evals.md) | Evals | 143 |
+| [`harnesses.md`](harnesses.md) | Harnesses | 219 |
+| [`misc.md`](misc.md) | Misc | 144 |
+| [`skills.md`](skills.md) | Skills | 120 |
 
 ## How to read an entry
 

@@ -10,3 +10,7 @@ Superseded, contradicted, or uncorroborated-after-3-months entries, kept for rec
 ## Harnesses
 
 - One full K8s pod per agent task — "wasteful but a better abstraction" (a whole computer beats a locked-down sandbox for agent power), paired with read/write state-sync across harness/repo/chat client. (low-confidence src — vendor framing) [ACP](https://www.youtube.com/watch?v=VaS2h-dY1-4) (2026-05) — archived 2026-08-07: single vendor-framed source, uncorroborated after 3 months, and the sandboxing section has since converged on microVMs as the boundary that survives guest root.
+
+## Harnesses
+
+- MCP "tasks" v1 (SEP-1686, Nov 2025): a tool call returns a handle with get-status/cancel/get-result, but the client CANNOT push new info into a running task (workaround: extra tools on the same server), and `tasks/list` is unfilterable [MLOps-English](https://podcasters.spotify.com/pod/show/mlops/episodes/The-Next-Programming-Language-Is-English-e3lnahg) (2026-07) — archived 2026-08-09: obsolete as fact. The v2 spec (Jul 2026) replaces the stateful elicitation tunnel with a client→server update endpoint and drops `tasks/list`; the superseding source states no client ever shipped v1, so the v1 asymmetry is not a constraint anyone still designs around [Temporal-Davis](https://www.youtube.com/watch?v=s4r6nk5WsZw) (2026-08).
