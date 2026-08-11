@@ -6,6 +6,7 @@ Superseded, contradicted, or uncorroborated-after-3-months entries, kept for rec
 
 - Skill-of-skills structure: a top-level skill + sub-skills (create/observe/...), each sub-skill fired by natural-language trigger words ("evaluate my agent", "help me build a data set"); inspect the installed SKILL.md to see its best-practice checklist + trigger phrases (low-confidence src) [Foundry](https://www.youtube.com/watch?v=iOXM3zE-2dk) (2026-05) — archived 2026-08: single low-confidence source, never corroborated.
 - Optimizer loops need a human stop button: an eval/optimize "observe skill" prompt-optimizer regresses chasing a perfect score (7→8→5...), so checkpoint after each step — the agent reports the result and asks "want me to continue?" while a human picks the best version (low-confidence src) [Foundry](https://www.youtube.com/watch?v=iOXM3zE-2dk) (2026-05) — archived 2026-08: single low-confidence source, never corroborated.
+- For brownfield migrations go docs-first: write docs over the legacy code (e.g. 2M LOC undocumented COBOL) and migrate from the docs, not the source (low-confidence src) [Cognition](https://www.youtube.com/watch?v=_xQnSNlBP_w) (2026-05) — archived 2026-08-11: low-confidence entry at the ~3-month mark with no corroboration since. Recoverable if a migration source repeats it.
 
 ## Harnesses
 
