@@ -126,6 +126,7 @@
 - Surface conflicts, don't hide them: when code in main disagrees with a Slack thread, let the agent see both and weight by source authority rather than silently picking one [Unblocked](https://www.youtube.com/watch?v=BiG2ssibKGc) (2026-05)
 - Don't cache "good answers" for latency — a correct answer goes stale on a ~24h clock as the system changes, so you start confidently serving lies [Unblocked](https://www.youtube.com/watch?v=BiG2ssibKGc) (2026-05)
 - Code-vs-docs conflicts need an explicit ranking skill: combining a repo with its Confluence docs lets the agent build a theory from code that contradicts the doc — author a ranking rule (code-wins, else Confluence) rather than leaving it ambiguous [DemandContext-Raj](https://www.youtube.com/watch?v=_QAVExf_1uw) (2026-05)
+- **The open web is adversarially optimized against research agents**: models can't separate promotional copy from independent signal and are highly susceptible to SEO, so competitor research ingests the competitor's own marketing. Curated docs beat internet access [Oliver-McLean](https://www.youtube.com/watch?v=t4359sKBu4w) (2026-05)
 - 80/20 data sources (SRE): Slack, code and logs get you far; treat code/infra as the always-current source of truth and work *backward from what's true today* to history — Slack/docs carry unverifiable staleness [MLOps-Sandboxing](https://podcasters.spotify.com/pod/show/mlops/episodes/Sandboxing--Agent-Harnesses--and-Agent-Teamwork-e3kts75) (2026-06)
 
 ## Latency & perceived UX
