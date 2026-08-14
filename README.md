@@ -4,16 +4,16 @@ A continuously-curated, public knowledge base on **building and using coding age
 
 The aim is to capture the *frontier* of agentic-coding practice: the parts that are too new or too practitioner-specific to be baked into a model's training data. Every claim links back to the talk or article it came from. Entries are added daily and pruned weekly so the base stays current rather than just growing.
 
-> Auto-generated and auto-updated. Last refreshed: **2026-08-13**.
+> Auto-generated and auto-updated. Last refreshed: **2026-08-14**.
 
 ## Topics
 
 | File | Topic | Entries |
 |------|-------|--------:|
 | [`archive.md`](archive.md) | Archive | 5 |
-| [`evals.md`](evals.md) | Evals | 174 |
-| [`harnesses.md`](harnesses.md) | Harnesses | 276 |
-| [`misc.md`](misc.md) | Misc | 152 |
+| [`evals.md`](evals.md) | Evals | 177 |
+| [`harnesses.md`](harnesses.md) | Harnesses | 278 |
+| [`misc.md`](misc.md) | Misc | 162 |
 | [`skills.md`](skills.md) | Skills | 122 |
 
 ## How to read an entry
