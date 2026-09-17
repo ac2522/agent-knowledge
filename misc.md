@@ -86,6 +86,7 @@
 - Tool ladder by language: **Verus** (Rust + Z3, `requires`/`ensures`, static and erased at runtime), **Aeneas** (Rust MIR → Lean), **Strata** (AWS, WIP: any language → dialect → Lean-written IR → dispatch to proofs, SMT solvers or model checkers) [AWS-Pant](https://www.youtube.com/watch?v=lRa9sPaMyy4) (2026-08)
 
 ## How AI changes the dev's work (research)
+- **Make the reviewer find independent evidence before seeing an AI alert as proof**: Duolingo reviewers upheld 50% of fabricated flags; one instruction change cut that to 29%, a 21-point gain in legitimate rejections [Duolingo-Ortmann-Lee](https://www.youtube.com/watch?v=CDqzWpwkSls) (2026-07)
 - Longitudinal study (28 countries, two surveys 6mo apart): a statistically significant shift from creation-focused to verification-focused tasks; reviewing code was the *only* task devs spent MORE time on — craft doesn't disappear, it relocates [Jeremy Howard](https://www.youtube.com/watch?v=NmjGfdZLNIs) (2026-06) [Forsgren](https://newsletter.pragmaticengineer.com/p/developer-productivity-with-dr-nicole) (2025-02)
 - 84% felt more productive (stable across both points) BUT devs reporting a *decline* in developer experience nearly doubled to 27% by month 6 — flow state hit hardest; feedback loops improved yet more-frequent feedback interrupts flow [Jeremy Howard](https://www.youtube.com/watch?v=NmjGfdZLNIs) (2026-06)
 - Strongest predictor of productivity gain = self-efficacy (belief in own ability), NOT seniority or company size — high-self-efficacy devs >10× more likely to report higher gains; buildable via mastery experiences [Jeremy Howard](https://www.youtube.com/watch?v=NmjGfdZLNIs) (2026-06)
@@ -194,6 +195,7 @@
 - ...for: at codegen cost ~0, design a model-only language — strongly typed, proof obligations, unreadable by humans. Decider: do proof obligations outweigh lost corpus coverage [DeepMind-Schillings](https://www.youtube.com/watch?v=1P1hJ36rxM0) (2026-07)
 
 ## Making products/codebases agent-native
+- **Measure agent-readiness from observed journeys, not standards compliance**: about half of sampled sites exposed `llms.txt`, yet agents almost never read it unless docs linked it. Replay identical intents across harnesses and optimize the paths they actually take [MCP-Apps-Yosef](https://www.youtube.com/watch?v=waI44NP1abk) (2026-09)
 - Two ideas worth stealing from WebMCP whatever becomes of the standard: expose tools **page-scoped** so the callable set changes as the agent navigates; and an **agent-invoked flag** so the app tells an agent fill from a human one [Chrome-Agyemang](https://www.youtube.com/watch?v=ghJmWQCIHRM) (2026-06)
 - ...page-scoping since corroborated in practice: a docs framework exposes `search_docs` / `get_page` / `ask_docs` over WebMCP [Inth-Burns](https://www.youtube.com/watch?v=V_5bn4q-vAI) (2026-08)
 - Agent-experience (AX): the primary user is increasingly an agent, not a human (claimed ~60% of Vercel traffic is bots) → CLIs/APIs/MCPs over dashboards; ship UI into the agent's app, not your own [swyx](https://www.youtube.com/watch?v=zepu8Kk6FBQ) (2026-05)
