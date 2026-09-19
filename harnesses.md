@@ -346,6 +346,8 @@
 
 ## Dynamic workflows — a bespoke harness per task
 - **Six portable harness patterns**: classify-and-act; fan-out-and-synthesize (isolated contexts so biases don't cross-contaminate); worker+critic against a rubric (cures self-preferential bias); generate-and-filter; tournament (pairwise beats absolute scoring); loop-until-done, gated on "any new findings?" [Prompt Engineering](https://www.youtube.com/watch?v=l5rae4LMKBc) (2026-06)
+- **Undocumented-device loop**: brute-force the command space; if it stalls, proxy and log the vendor UI's traffic; infer the missing write/checksum sequence; replay against the device to verify [ElevenLabs-Starkov](https://www.youtube.com/watch?v=V-L0INGTEOg) (2026-05)
+- Physical debugging can put the human inside the tool loop as sensor and actuator: the agent chooses experiments, asks for beep counts or reboots, observes the report, then chooses the next action [ElevenLabs-Starkov](https://www.youtube.com/watch?v=V-L0INGTEOg) (2026-05)
 - **OpenProse** — dynamic-workflow behavior on ANY agent: a markdown "logical English" spec (`.pros.md`) compiled by the CODING AGENT. It declares sub-agent work explicitly, verifies each sub-agent's work in the PARENT session, and wires skills and CLI tools as DEPENDENCIES [OpenProse](https://www.youtube.com/watch?v=3hXJI2q0Jz8) (2026-06)
 
 - **Golden-session → reusable workflow → then CRYSTALLIZE it**: an agent can compile a repeated request into deterministic code; WorkOS generates JS widgets whose refreshes bypass the model. Keep reasoning only for changes [OpenProse](https://www.youtube.com/watch?v=3hXJI2q0Jz8) [WorkOS-Studio](https://www.youtube.com/watch?v=iUWwcG-C8OU) (2026-06)
