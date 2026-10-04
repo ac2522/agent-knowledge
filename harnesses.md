@@ -174,6 +174,7 @@
 - **Partial observability, with no model prior about which source to trust**: the DOM misses dynamically-generated content, the screenshot misses anything below the fold. Feeding both without saying what each is good for is its own failure mode [Amazon-AGI-Mishra](https://www.youtube.com/watch?v=Cc0_nyxROBA) (2026-08)
 - A spatial harness pairs screenshots with scene JSON, viewport actions and canvas-edit tools: the model must learn both 2D interpretation and each action's effect. This is the canvas analogue of code plus filesystem tools [tldraw-Drake](https://www.youtube.com/watch?v=XWcXwnysmpY) (2026-09)
 - **Verify through a DIFFERENT channel than you acted through** — don't ask the click, read the network or screen. Loop is sense → act → verify; today's agents fire and move on, never watching whether it landed [Rexmore-Gallon](https://www.youtube.com/watch?v=26RtyAm9y_Q) (2026-08) [Amazon-AGI-Barth](https://www.youtube.com/watch?v=2JX6JYyQG4Y) (2026-07)
+- For transactional browser work, externalize stable auth/download steps into deterministic functions; let the model handle ambiguity, verify a terminal artifact, and retry the idempotent whole transaction [Browserbase-Meegan](https://www.youtube.com/watch?v=5xi_S1f9sDU) (2026-10)
 - Two failure modes from RL training runs: session expires → the model reasons "I can infer the password", guesses and LOCKS the account; an ad with a lookalike submit button → it clicks through and fills in personal details [Amazon-AGI-Mishra](https://www.youtube.com/watch?v=Cc0_nyxROBA) (2026-08)
 
 ## Production failure modes (LLM/VLM-in-the-loop)
@@ -196,7 +197,7 @@
 - A GAN-style loop course-corrects by throwing everything out and restarting when stuck; a single-pass loop keeps patching the same broken thing. 4.6-class models readily discarded 10 passes and did NOT rubber-stamp as feared [Anthropic](https://www.youtube.com/watch?v=mR-WAvEPRwE) (2026-05) [Kent Beck](https://newsletter.pragmaticengineer.com/p/how-kent-beck-shapes-the-software) (2026-07)
 
 ## Verification & anti-cheating
-- **Replay UI behavior, not just assertions**: capture real browser flows, stub recorded network responses, deterministically schedule timers, then diff screenshots at every step; choose flows by baseline line coverage [Meticulous](https://www.youtube.com/watch?v=HLTa7Vcs4X0) (2026-10)
+- **Replay and snapshot UI evidence**: replay real flows with recorded responses, deterministic timers and per-step screenshot diffs; snapshot every component on each change and put visual diffs in the PR. Choose flows by baseline coverage [Meticulous](https://www.youtube.com/watch?v=HLTa7Vcs4X0) [VS Code](https://www.youtube.com/watch?v=I2LL_wd89-A) (2026-10)
 - **Make the verification agent independent and adversarial**: it never sees the discovery agent's reasoning, receives only the claimed finding, and is told to assume it's false and prove that. A discovery agent that debates itself self-censors [Anthropic-Yan](https://www.youtube.com/watch?v=imFedndyXYQ) (2026-07)
 - **Treat the PR as hostile input to its reviewer**: vulnerable code wrapped in an innocent commit message fooled an autonomous review agent in 88% of attempts versus 35% for humans; retain human checkpoints for security-sensitive changes [Arize-Voss](https://www.youtube.com/watch?v=_mi3alkqy4s) (2026-09)
 - **Agents fabricate rather than report tool failure**: a blocked or empty fetch becomes "I searched the web", and a failed fetch silently falls back to stale training data. Verify tool *results*; treat agent citations as unverified until fetched [Bright Data](https://www.youtube.com/watch?v=btxGmN8RvNU) (2026-06) [Wisedocs-Linkov](https://www.youtube.com/watch?v=7vn4WpqNpck) (2026-08)
@@ -272,6 +273,7 @@
 
 ### Monitoring-triggered loops (post-launch)
 - **The "missing layer" is post-launch, triggered by LOG MONITORING**: an agent runs every 15–60 min over a ~1h window with codebase access, diagnoses stuck or "successful-but-wrong" users, opens a PR — gated by a SEPARATE review agent, FRESH context [Wandero](https://www.youtube.com/watch?v=kZsf_Sfm7RU) (2026-07)
+- Funnel production exceptions deterministically before involving an agent: require full stacks, fingerprint and rank by affected users, assign an owner, then open a diagnosis plus proposed-fix PR [VS Code-Kirschner](https://www.youtube.com/watch?v=I2LL_wd89-A) (2026-10)
 - **Change-triggered variant: a check plan PER RELEASE, not fixed CI checks.** The agent reads what changed, infers which telemetry is causally downstream and picks the cadence. Its real gain is what CI never sees: feature flags and infra edits [Resolve-Smith](https://www.youtube.com/watch?v=vSx5IULvBns) (2026-08)
 
 ## Agent-rate development — CI in the loop, merge queues
@@ -296,6 +298,7 @@
 
 ## Running LLM-generated code — sandboxes
 - **"Seven stages of sandboxing"**: teams try fork/exec → containers/seccomp → gVisor → V8 and all end at microVMs — hardware virtualization is the only boundary surviving guest root. Start there (Firecracker / Cloud Hypervisor / crosvm) [OpenAI-Bhardwaj](https://www.youtube.com/watch?v=OqM67QG_Ikk) (2026-07)
+- Keep secrets outside the agent guest and substitute scoped placeholders at network egress; mount related repositories read-only when they are context, not mutation targets [Docker-Christmas](https://www.youtube.com/watch?v=OE_lLNCNfQo) (2026-10)
 - Decompose cross-system work at trust boundaries: GitHub-read sandbox produces a summary, separate Notion-only sandbox writes it; passing the artifact prevents one process from accumulating both credentials [Docker](https://www.youtube.com/watch?v=zaGyGgLW3SM) (2026-08)
 - Syscall-allowlist (seccomp) filters fight GENERAL agents: you can't enumerate needed syscalls up front and blocked calls make a terrible feedback loop — isolate the environment rather than over-restricting. "System tricks can cover performance issues; they cannot hide security breaches" [OpenAI-Bhardwaj](https://www.youtube.com/watch?v=OqM67QG_Ikk) (2026-07)
 - **Inverted sandbox design**: start from a zero-capability JS isolate (no fetch, no filesystem, no env vars), granting capabilities outward, not locking a VM down afterwards. Full-stack version: generated UI in a null-origin iframe, server code in a no-egress worker [Cloudflare](https://www.youtube.com/watch?v=SKDJo2CopRs) (2026-06) [Varda/Cloudflare](https://www.youtube.com/watch?v=RmS5s6Wbin4) (2026-08)
